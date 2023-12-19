@@ -111,7 +111,7 @@ function StudentsData() {
             )}
           </tbody>
         </table>
-       : <img src=""></img>}
+       : <img className="d-block m-auto my-5" src="https://upload.wikimedia.org/wikipedia/en/4/47/VNRVJIETLogo.png" alt="logo"></img>}
        </div>
     </div>
   );

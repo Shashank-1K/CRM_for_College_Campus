@@ -9,7 +9,6 @@ function Login() {
     const navigate = useNavigate()
     const { register, handleSubmit } = useForm();
     const submitLogin = (data) => {
-        // console.log(data);
         signInWithEmailAndPassword(auth, data.email, data.password)
             .then((userdata) => {
                 console.log(userdata?.user)
