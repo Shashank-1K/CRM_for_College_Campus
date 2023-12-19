@@ -40,7 +40,6 @@ const IndexPage = props => {
     <div>
       <Box
         overflow="hidden"
-        bgColor="#82001a"
         w="100vw"
         justifyContent="center"
       >

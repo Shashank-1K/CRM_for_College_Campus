@@ -1,66 +1,46 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {auth,googleProvider} from '../../firebaseconfig'
-import { signInWithEmailAndPassword,signInWithPopup,signOut} from 'firebase/auth'
-import UserContext from '../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { auth } from '../../firebaseconfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useNavigate, NavLink } from 'react-router-dom';
+import './Login.css'
 function Login() {
     const navigate = useNavigate()
-    const {user} = useContext(UserContext)
-    let [currentUser,setCurrentUser] = user
     const { register, handleSubmit } = useForm();
-    const googleSignin  = () =>{
-        signInWithPopup(auth,googleProvider)
-        .then((data)=>{
-            console.log(data)
-            setCurrentUser(auth?.currentUser);
-            auth?.currentUser?.getIdToken()
-            .then((tokenID) => {
-                window.sessionStorage.setItem("token",tokenID)
-                navigate('/profile')
+    const submitLogin = (data) => {
+        // console.log(data);
+        signInWithEmailAndPassword(auth, data.email, data.password)
+            .then((userdata) => {
+                console.log(userdata?.user)
+                console.log(auth?.currentUser)
+                window.localStorage.setItem("currentuser", JSON.stringify(auth?.currentUser))
+                auth?.currentUser?.getIdToken()
+                    .then((tokenID) => {
+                        console.log(tokenID)
+                        window.localStorage.setItem("token", tokenID)
+                        navigate('/profile')
+                    })
+                    .catch((err) => console.log(err))
             })
             .catch((err) => console.log(err))
-        })
-        .catch((err) => console.log(err))
-    }
-    const onSubmit = (data) => {
-        console.log(data);
-        signInWithEmailAndPassword(auth,data.email,data.password)
-        .then((data)=>{
-            console.log(data)
-            setCurrentUser(auth?.currentUser);
-            auth?.currentUser?.getIdToken()
-            .then((tokenID) => {
-                window.sessionStorage.setItem("token",tokenID)
-                navigate('/profile')
-            })
-            .catch((err) => console.log(err))
-        })
-        .catch((err) =>console.log(err))
     };
-    const logout = () =>{
-        signOut(auth)
-        .then((userdata) => {
-            setCurrentUser([])
-            window.sessionStorage.removeItem('token');
-            navigate('/')
-        })
-        .catch((err) =>console.log(err))
-    }
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input type='email' className='form-control  border my-3 border-dark border-2' id='email' placeholder='Email' aria-required='true' {...register("email")}></input>
-                <input type="password" suggested="current-password" className="form-control border border-dark border-2" id="password" placeholder="password" aria-required="true" name="password" {...register("password")}></input>
-                <div className='d-inline'>
-                    <button type="submit" className='btn btn-primary mx-2 my-2'>Login</button>
-                    <button type="button" className='btn btn-danger mx-2 my-2' onClick={googleSignin}>Google +</button>
-                    <button type="button" className='btn btn-danger mx-2 my-2' onClick={logout} >Logout</button>
-                </div>
-            </form>
-            {console.log(currentUser)}
+            <video className='background-video ' autoPlay={true} muted={true} loop={true}>
+                <source src="https://vnrvjiet.ac.in/assets/images/Website Hero Video.mp4" type="video/mp4" />
+            </video>
+            <div className=' overlay text-center w-50'>
+                <h2 className='display-5 text-white'>Login</h2>
+                <form className='form d-block mx-auto border rounded p-4 w-50 mt-3' onSubmit={handleSubmit(submitLogin)}>
+                    <input type='email' className='form-control mt-3 mb-1' placeholder='email' required {...register('email')}></input>
+                    <input type='password' className='form-control mt-3 mb-1' placeholder='Password' autoComplete='on' required minLength={8} {...register('password', { required: true })}></input>
+                    <button className='btn btn-light d-block mx-auto mt-4 mb-4 px-4' type='submit'>Login</button>
+                    <NavLink to='/register' className='register' >Register</NavLink>
+                </form>
+            </div>
         </div>
+
     );
 }
 

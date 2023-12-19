@@ -1,0 +1,13 @@
+.menu-anchor:hover {
+  background-color: #cafce1 !important;
+  font-weight: bolder;
+}
+
+.menu-label {
+  font-size: 13px;
+}
+.mygrid{
+    max-height: 100%;
+    position: absolute;
+    overflow: scroll;
+}

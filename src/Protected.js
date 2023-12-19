@@ -1,13 +1,7 @@
-import { useNavigate } from 'react-router-dom'
-import { useContext } from 'react'
-import UserContext from './contexts/UserContext'
+import { Navigate } from 'react-router-dom'
 function Protected({children}) {
-    const {user} = useContext(UserContext)
-    const navigate = useNavigate()
-    const [currentUser] = user;
-    console.log(currentUser)
-    if(window.sessionStorage.getItem("token") === currentUser.accessToken)
-        return children
-    navigate('/')
+    if(window.localStorage.getItem("token"))
+        return children;
+    return <Navigate to='/'></Navigate>
 }
 export default Protected
