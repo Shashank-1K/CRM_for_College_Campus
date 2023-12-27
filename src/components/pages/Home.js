@@ -6,10 +6,10 @@ import Statistics from "../images/HomePage/Statistics.png"
 import Donut from "../images/HomePage/Donut.png"
 import Spring from "../images/HomePage/Spring.png"
 import ContactSS from "../images/Screenshots/contacts.png"
-import DealSS from "../images/Screenshots/deals.png"
-import DashboardSS from "../images/Screenshots/dashboard.png"
-import CalendarSS from "../images/Screenshots/calendar.png"
-import TaskSS from "../images/Screenshots/tasks.png"
+import DealSS from "../images/Screenshots/DeptPage.png"
+import DashboardSS from "../images/Screenshots/FacultyDetails.png"
+import CalendarSS from "../images/Screenshots/AttendenceF.png"
+import TaskSS from "../images/Screenshots/TimeTable.png"
 import { IoIosArrowDown } from "react-icons/io"
 import {
   Box,
@@ -62,10 +62,15 @@ const IndexPage = props => {
                 </Text>
                 <br />
                 <HStack gridGap={15}>
+                <a href="/FacultyLogin"><button
+                  className="btn btn-lg btn-danger text-light"
+                  bgColor="#82001a">
+                  Faculty
+                  </button></a>
                   <a href="/login"><button
                     className="btn btn-lg btn-danger text-light"
                     bgColor="#82001a">
-                    Sign Up
+                    Student
                   </button></a>
                   <button
                     onClick={() => scrollToDiv(homeInfo)}
@@ -184,12 +189,12 @@ const IndexPage = props => {
                   fontFamily="Raleway-Bold"
                   fontSize={["35px", "40px"]}
                 >
-                  What's cool about us?
+                  About us
                 </Heading>
                 <Text pb={isLargeSize && "30px"} fontSize="20px">
-                  RippleDEX's features are built with closing deals in mind.
-                  Your teams, the tools they need, customer data, are all stored
-                  in one place.
+                The problem we're addressing is that our college currently faces challenges in how we manageinformation and communication with students, teachers, alumni, and oth
+                hard to provide the best support, plan effectively, and engage with our community in the best
+                way possible
                 </Text>
               </Box>
             </Center>
@@ -211,7 +216,7 @@ const IndexPage = props => {
               >
                 <Center>
                   <Box pb={!isLargeSize && "30px"}>
-                    <Image w={["300px", "500px"]} src={ContactSS} />
+                    <Image w={["300px", "500px"]} src={'https://img.freepik.com/premium-vector/3d-simple-user-icon-isolated_169241-7120.jpg?w=740'} />
                   </Box>
                 </Center>
                 <Center>
@@ -221,12 +226,11 @@ const IndexPage = props => {
                       fontFamily="Raleway-Bold"
                       fontSize={["35px", "40px"]}
                     >
-                      Save time between clients
+                      Student & Faculty Profiles
                     </Heading>
                     <Text fontSize="20px">
-                      RippleDEX allows seamless access to logs kept for each
-                      client. Users won't need to depend on third party apps to
-                      pull up previous interactions and information.
+                  
+                    The "Student and Faculty Profiles" feature in the College Campus CRM provides a centralized platform for managing student and faculty information.
                     </Text>
                   </Box>
                 </Center>
@@ -242,7 +246,7 @@ const IndexPage = props => {
                 {!isLargeSize && (
                   <Center>
                     <Box pb="30px">
-                      <Image w="300px" src={CalendarSS} />
+                      <Image w="300px" src={"../images/Screenshots/calendar.png"} />
                     </Box>
                   </Center>
                 )}
@@ -257,13 +261,10 @@ const IndexPage = props => {
                       fontFamily="Raleway-Bold"
                       fontSize={["35px", "40px"]}
                     >
-                      Clear Calendar & Scheduling System
+                      Student Attendence
                     </Heading>
                     <Text fontSize="20px">
-                      Never forget a client meeting again with our easy-to-use
-                      calendar system. Schedule past and upcoming events with
-                      ease. Our system will specifically remind you of events
-                      related to you so you never miss that important meeting.
+                    Faculty members can log in, select the department and section, and easily take and save attendance. The system also allows for quick generation of PDF attendance reports with date and time details. Streamlining the process for efficient attendance management.
                     </Text>
                   </Box>
                 </Center>
@@ -295,13 +296,11 @@ const IndexPage = props => {
                       fontFamily="Raleway-Bold"
                       fontSize={["35px", "40px"]}
                     >
-                      Optimized Deal Pipeline
+                      Department Page
                     </Heading>
                     <Text fontSize="20px">
-                      Keep track of all your deals related to a workspace.
-                      Categorize and plan progression of deals based on it's
-                      stage in the deal pipeline and clearly view your
-                      progression through the stages.
+                      
+The "Department Page" feature in the College Campus CRM gives each academic department its own space. It includes faculty info, course details, announcements, and events. This helps improve communication and management within departments, connecting seamlessly with other CRM modules for an organized campus experience.
                     </Text>
                   </Box>
                 </Center>
@@ -332,12 +331,10 @@ const IndexPage = props => {
                       fontFamily="Raleway-Bold"
                       fontSize={["35px", "40px"]}
                     >
-                      Draggable Tasks
+                      TimeTable & Other Circulars
                     </Heading>
                     <Text fontSize="20px">
-                      Easily manage tasks related to your deals with RippleDEX's
-                      task kanban board, where users can drag tasks around to
-                      update their status.
+                    Students can conveniently access the college Time Table and the latest Circulars through the platform. The system allows students to download and view notices/circulars, providing easy access to important information for their academic schedules and college updates.
                     </Text>
                   </Box>
                 </Center>
@@ -365,13 +362,10 @@ const IndexPage = props => {
                       fontFamily="Raleway-Bold"
                       fontSize={["35px", "40px"]}
                     >
-                      Business and Sales Analytics
+                      Faculty Details Access for Students
                     </Heading>
                     <Text fontSize="20px">
-                      Our CRM crunches the numbers and displays highly visual
-                      and engaing statistics in real time. Boost productivity by
-                      by seeing metrics about your deals and identify which
-                      areas need the most attention and improvement.
+                    Students can easily access faculty details from all departments, including academic backgrounds. The platform provides direct communication links via email and LinkedIn, facilitating seamless interaction between students and faculty members.                      
                     </Text>
                   </Box>
                 </Center>
@@ -389,7 +383,7 @@ const IndexPage = props => {
                   >
                     About Us
                   </Text>
-                  <Text color="gray">© 2021 RippleDEX Team</Text>
+                  <Text color="gray">© 2023 CRM for College Campus</Text>
                 </VStack>
               </Center>
             </VStack>a

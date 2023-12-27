@@ -22,16 +22,16 @@ import { getDoc, doc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { FaEdit } from "react-icons/fa";
 import './Profile.css'
-import PopupForm from './PopupForm';
+import PopupFormFaculty from './PopupFormFaculty';
 import { FaDatabase } from "react-icons/fa";
-function Profile() {
+function FacultyProfile() {
   const navigate = useNavigate()
   const [isopen,setIsopen] = useState(false);
   const user = JSON.parse(window.localStorage.getItem("currentuser"))
   console.log(user);
   let [userdetails, setUserDetails] = useState()
   useEffect(() => {
-    getDoc(doc(db, "users", user?.uid))
+    getDoc(doc(db, "faculty", user?.uid))
       .then((userdata) => setUserDetails(userdata.data()))
       .catch((err) => console.error(err))
   }, [user?.uid])
@@ -55,8 +55,7 @@ function Profile() {
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                  <a href="/NotandTt"><button className='btn text-light'>Timetables & Other Circulars<FaDatabase /></button></a>
-                  <a href="/studentsdata"><button className='btn text-light'>Students & Faculty Data  <FaDatabase /></button></a>
+                  <a href="/FacultyData"><button className='btn text-light'>Students & Faculty Data  <FaDatabase /></button></a>
                   <button onClick={Logout} className='btn text-light'>Sign Out  <IoLogOut /></button>
                 </Navbar.Text>
               </Navbar.Collapse>
@@ -67,7 +66,7 @@ function Profile() {
               <MDBCard className="mb-4">
                 <MDBCardBody className="text-center">
                   <MDBCardImage
-                    src={`https://automation.vnrvjiet.ac.in/eduprime3/Docs/VNRVJIET/User/${userdetails?.rollno}.jpg`}
+                    src={`https://img.freepik.com/premium-vector/3d-simple-user-icon-isolated_169241-7120.jpg?w=740`}
                     alt="avatar"
                     className="rounded"
                     style={{ width: '150px' }}
@@ -100,10 +99,10 @@ function Profile() {
                 <MDBCardBody>
                   <MDBRow>
                     <MDBCol sm="3">
-                      <MDBCardText>Roll No</MDBCardText>
+                      <MDBCardText>Department</MDBCardText>
                     </MDBCol>
                     <MDBCol sm="9">
-                      <MDBCardText className="text-muted">{userdetails?.rollno}</MDBCardText>
+                      <MDBCardText className="text-muted">{userdetails?.department}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
                   <hr />
@@ -124,11 +123,19 @@ function Profile() {
                       <MDBCardText className="text-muted">{userdetails?.email}</MDBCardText>
                     </MDBCol>
                   </MDBRow>
+                  <hr />
+                  <MDBRow>
+                    <MDBCol sm="3">
+                      <MDBCardText>Subject</MDBCardText>
+                    </MDBCol>
+                    <MDBCol sm="9">
+                        <MDBCardText className="text-muted">{userdetails?.subject}</MDBCardText>
+                    </MDBCol>
+                  </MDBRow>
                 </MDBCardBody>
               </MDBCard>
-              {isopen && <PopupForm/>}
+              {isopen && <PopupFormFaculty/>}
             </MDBCol>
-            
           </MDBRow>
         </MDBContainer>
       </section>
@@ -136,4 +143,4 @@ function Profile() {
   )
 }
 
-export default Profile
+export default FacultyProfile

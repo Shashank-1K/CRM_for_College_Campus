@@ -35,7 +35,9 @@ function Login() {
                     <input type='email' className='form-control mt-3 mb-1' placeholder='email' required {...register('email')}></input>
                     <input type='password' className='form-control mt-3 mb-1' placeholder='Password' autoComplete='on' required minLength={8} {...register('password', { required: true })}></input>
                     <button className='btn btn-light d-block mx-auto mt-4 mb-4 px-4' type='submit'>Login</button>
-                    <NavLink to='/register' className='register' >Register</NavLink>
+                    <NavLink to='/register' className='register' >Student Register</NavLink> 
+                    {/* <br></br> */}
+                    {/* <NavLink to='/FacultyRegistration' className='register' >Faculty Register</NavLink> */}
                 </form>
             </div>
         </div>

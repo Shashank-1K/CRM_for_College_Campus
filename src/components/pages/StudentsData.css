@@ -1,13 +1,19 @@
 .menu-anchor:hover {
-  background-color: #cafce1 !important;
   font-weight: bolder;
 }
-
 .menu-label {
   font-size: 13px;
 }
 .mygrid{
+    margin-left: 15.3%;
     max-height: 100%;
     position: absolute;
     overflow-y: scroll;
+}
+.studentimage{
+  width: 15%;
+}
+.logo{
+  margin: auto;
+  padding-top: 15%;
 }

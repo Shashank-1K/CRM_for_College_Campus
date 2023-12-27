@@ -7,9 +7,10 @@ import {
   RiStackLine,
 } from "react-icons/ri";
 import { FaLinkedin } from "react-icons/fa";
-import { onValue, ref } from 'firebase/database';
+import { onValue, ref,push } from 'firebase/database';
 import { useNavigate } from "react-router-dom";
 import { realtimedb } from '../../firebaseconfig'
+import { jsPDF } from "jspdf";
 import {
   Sidebar,
   SubMenu,
@@ -17,20 +18,56 @@ import {
   MenuItem
   //useProSidebar
 } from "react-pro-sidebar";
-function StudentsData() {
-  let [studentsData, setStudentsData] = useState()
+function FacultyData() {
+  let [studentsData, setStudentsData] = useState();
+  const [selectedStudents, setSelectedStudents] = useState([]);
   let [facultyData,setFacultyData] = useState();
+  const handleCheckboxChange = (rollno) => {
+    const updatedSelectedStudents = [...selectedStudents];
+    const index = updatedSelectedStudents.indexOf(rollno);
+
+    if (index === -1) {
+      updatedSelectedStudents.push(rollno);
+    } else {
+      updatedSelectedStudents.splice(index, 1);
+    }
+
+    setSelectedStudents(updatedSelectedStudents);
+  };
+  const saveAttendance = () => {
+    const attendanceRef = ref(realtimedb, "attendance/");
+    const timestamp = new Date().toLocaleString();
+    const data = {
+      timestamp,
+      students: selectedStudents,
+    };
+    push(attendanceRef, data);
+    alert("Attendance saved successfully!");
+  };
+
+  const generatePDF = () => {
+    const pdf = new jsPDF();
+
+    pdf.text("Attendance Details", 20, 10);
+    pdf.text(`Date: ${new Date().toLocaleDateString()}`, 20, 20);
+    pdf.text(`Time: ${new Date().toLocaleTimeString()}`, 20, 30);
+
+    pdf.text("presentees", 20, 50);
+    selectedStudents.forEach((student, index) => {
+      pdf.text(`${index + 1}. ${student}`, 20, 60 + 10 * index);
+    });
+
+    pdf.save("attendance.pdf");
+  };
   const navigate = useNavigate()
   const getSecttionData = (section) => {
     const reference = ref(realtimedb, "students/departments/" + section)
     onValue(reference, (snapshot) => {
       setStudentsData(snapshot.val())
       setFacultyData()
+      setSelectedStudents([]);
     })
   }
-  const handleDepartmentClick = (path) => {
-    navigate(path);
-  };
   const getFacultyData = (section) => {
     const reference = ref(realtimedb, "faculty/faculty/departments/"+ section)
     onValue(reference, (snapshot) => {
@@ -60,7 +97,7 @@ function StudentsData() {
             <hr />
           </Menu>
           <Menu>
-            <MenuItem onClick={() => navigate("/profile")} icon={<RiHome4Line />}>Profile</MenuItem>
+            <MenuItem onClick={() => navigate("/FacultyProfile")} icon={<RiHome4Line />}>Profile</MenuItem>
             <SubMenu label={"Students"} icon={<RiTeamLine />}>
               <SubMenu label={"IT"} icon={<RiFolder2Line />}>
                 <MenuItem onClick={() => getSecttionData("/0/section/A")} icon={<RiStackLine />}>Section A</MenuItem>
@@ -110,41 +147,6 @@ function StudentsData() {
             <MenuItem onClick={() => getFacultyData("/6")} icon={<RiStackLine />}>CSBS</MenuItem>
             <MenuItem onClick={() => getFacultyData("/7")} icon={<RiStackLine />}>AIML</MenuItem>
             </SubMenu>
-              <SubMenu label={"Departments"} icon={<RiFolder2Line />}>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/It")} icon={<RiStackLine />}>
-                  IT
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Cse")} icon={<RiStackLine />}>
-                  CSE
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Ece")} icon={<RiStackLine />}>
-                  ECE
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Eee")} icon={<RiStackLine />}>
-                  EEE
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Automobile")} icon={<RiStackLine />}>
-                  Automobile Engineering
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Civil")} icon={<RiStackLine />}>
-                  Civil Engineering
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Eie")} icon={<RiStackLine />}>
-                  EIE
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/HandS")} icon={<RiStackLine />}>
-                  Humanies & Sciences
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Mechanical")} icon={<RiStackLine />}>
-                  Mechanical Engineering
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/CseAiml")} icon={<RiStackLine />}>
-                  AIML
-                </MenuItem>
-                <MenuItem onClick={() => handleDepartmentClick("/dept/Aids")} icon={<RiStackLine />}>
-                  AIDS
-                </MenuItem>
-              </SubMenu>
           </Menu>
         </main>
       </Sidebar>
@@ -152,8 +154,10 @@ function StudentsData() {
       <div className="container mygrid">
           {studentsData ? <table className="table table-bordered table-striped">
           <thead>
+            <p>Total students Present = {selectedStudents.length}</p>
             <tr>
               <th scope="col">S.No</th>
+              <th scope="col">Select</th>
               <th scope="col"></th>
               <th scope="col">Name</th>
               <th scope="col">Roll No.</th>
@@ -162,13 +166,23 @@ function StudentsData() {
           <tbody>
             {studentsData?.map((student, index) =>
               <tr key={student?.rollno}>
-                <th scope="row">{index + 1}</th>
+                <td>{index + 1}</td>
+                <td>
+                      <input
+                        type="checkbox"
+                        id={`checkbox-${index}`}
+                        checked={selectedStudents.includes(student?.rollno)}
+                        onChange={() => handleCheckboxChange(student?.rollno)}
+                      />
+                    </td>
                 <td><img src={`https://automation.vnrvjiet.ac.in/eduprime3/Docs/VNRVJIET/User/${student?.rollno}.jpg`} alt={student?.rollno} className="studentimage"></img></td>
                 <td>{student?.name}</td>
                 <td>{student?.rollno}</td>
               </tr>
             )}
           </tbody>
+          <button className="btn btn-success my-2 m-auto mx-3" onClick={saveAttendance}>Save Attendance</button>
+          <button className="btn btn-success my-2 m-auto mx-3" onClick={generatePDF}>Generate PDF</button>
         </table>
        : facultyData ? <table className="table table-bordered table-striped">
        <thead>
@@ -207,4 +221,4 @@ function StudentsData() {
   );
 }
 
-export default StudentsData
+export default FacultyData
